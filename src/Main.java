@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -13,11 +15,12 @@ public class Main {
     private static List<String> countList;
 
     public final static String ABSOLUTE_PATH_IN = "data/Input2.txt";
+    public final static String ABSOLUTE_PATH_OUT = "data/Output2.txt";
 
     private static int countChanges;
     private static int countSteps;
 
-    private static DecimalFormat df;//
+    private static DecimalFormat df;
 
     public static void main(String[] args) throws Exception {
         arrays = new ArrayList<>();
@@ -34,9 +37,11 @@ public class Main {
             arrays.set(i, temp);
         }
 
-        for(int i = 0; i < arrays.size() ; i++){
+        /* for(int i = 0; i < arrays.size() ; i++){
             System.out.println(countList.get(i));
-        }
+        } */
+
+        exportData();
         
     }
 
@@ -132,5 +137,20 @@ public class Main {
     private static double promCalculation(int changes, int steps) {
         double temp = (double) changes / steps;
         return temp;
+    }
+
+    private static void exportData() throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(ABSOLUTE_PATH_OUT));
+
+        for (int i = 0; i < countList.size(); i++) {
+            String line = countList.get(i);
+            if( i == countList.size() -1 ){
+                bw.write(line);
+            } else {
+                bw.write(line + "\n");
+            }
+            
+        }
+        bw.close();
     }
 }
