@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,45 +36,34 @@ public class Main {
             arrays.set(i, temp);
         }
 
-        /* for(int i = 0; i < arrays.size() ; i++){
-            System.out.println(countList.get(i));
-        } */
-
         exportData();
-        
+
     }
 
-    private static void importData() {
+    private static void importData() throws IOException {
         BufferedReader br;
-        try {
-            br = new BufferedReader(new FileReader(ABSOLUTE_PATH_IN));
-            String line;
-            try {
-                line = br.readLine();
-                line = br.readLine();
 
-                while (line != null) {
-                    String[] parts = line.split(" ");
-                    List<Double> temp = new ArrayList<>();
+        br = new BufferedReader(new FileReader(ABSOLUTE_PATH_IN));
+        String line;
 
-                    for (int i = 0; i < parts.length; i++) {
-                        temp.add(Double.parseDouble(parts[i]));
-                    }
-                    arrays.add(temp);
+        line = br.readLine();
+        line = br.readLine();
 
-                    line = br.readLine();
-                }
-                br.close();
-            } catch (IOException e) {
-                
-                e.printStackTrace();
+        while (line != null) {
+            String[] parts = line.split(" ");
+            List<Double> temp = new ArrayList<>();
+
+            for (int i = 0; i < parts.length; i++) {
+                temp.add(Double.parseDouble(parts[i]));
             }
+            arrays.add(temp);
 
-        } catch (FileNotFoundException e) {
-            
-            e.printStackTrace();
+            line = br.readLine();
         }
+        br.close();
+        System.out.println("Data readed from: " + ABSOLUTE_PATH_IN);
     }
+
 
     private static List<Double> bubbleSorting(List<Double> list) {
 
@@ -96,11 +84,10 @@ public class Main {
                     countOfChanges();
                 }
             }
-
             countOfSteps();
         }
         for (int i = 0; i < list.size(); i++) {
-            if (i == list.size()-1) {
+            if (i == list.size() - 1) {
                 message += list.get(i);
             } else {
                 message += list.get(i) + " ";
@@ -110,7 +97,7 @@ public class Main {
         df.setRoundingMode(RoundingMode.DOWN);
         String temp = df.format(promCalculation(countChanges, countSteps)) + "";
 
-        if(temp.indexOf(".") == -1){
+        if (temp.indexOf(".") == -1) {
             temp += ".0";
         }
         countList.add(temp + "-" + message);
@@ -144,13 +131,10 @@ public class Main {
 
         for (int i = 0; i < countList.size(); i++) {
             String line = countList.get(i);
-            if( i == countList.size() -1 ){
-                bw.write(line);
-            } else {
                 bw.write(line + "\n");
-            }
-            
         }
         bw.close();
+
+        System.out.println("Data written in: " + ABSOLUTE_PATH_OUT);
     }
 }
