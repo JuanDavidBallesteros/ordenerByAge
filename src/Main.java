@@ -2,8 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -16,11 +17,15 @@ public class Main {
     private static int countChanges;
     private static int countSteps;
 
+    private static DecimalFormat df;//
+
     public static void main(String[] args) throws Exception {
         arrays = new ArrayList<>();
         countList = new ArrayList<>();
         countChanges = 0;
         countSteps = 0;
+
+        df = new DecimalFormat("#.##");
 
         importData();
 
@@ -30,7 +35,6 @@ public class Main {
         }
 
         for(int i = 0; i < arrays.size() ; i++){
-            System.out.println(Arrays.toString(arrays.get(i).toArray()));
             System.out.println(countList.get(i));
         }
         
@@ -73,7 +77,7 @@ public class Main {
         resetCountChanges();
         resetCountSteps();
 
-        
+        String message = "";
 
         for (int i = list.size() - 1; i > 0; i--) {
 
@@ -90,9 +94,21 @@ public class Main {
 
             countOfSteps();
         }
+        for (int i = 0; i < list.size(); i++) {
+            if (i == list.size()-1) {
+                message += list.get(i);
+            } else {
+                message += list.get(i) + " ";
+            }
+        }
 
-        
-        countList.add(countChanges + "-" + countSteps);
+        df.setRoundingMode(RoundingMode.DOWN);
+        String temp = df.format(promCalculation(countChanges, countSteps)) + "";
+
+        if(temp.indexOf(".") == -1){
+            temp += ".0";
+        }
+        countList.add(temp + "-" + message);
 
         return list;
     }
@@ -111,5 +127,10 @@ public class Main {
 
     private static void resetCountSteps() {
         countSteps = 0;
+    }
+
+    private static double promCalculation(int changes, int steps) {
+        double temp = (double) changes / steps;
+        return temp;
     }
 }
