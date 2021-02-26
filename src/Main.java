@@ -9,15 +9,31 @@ import java.util.List;
 public class Main {
 
     private static List<List<Double>> arrays;
+    private static List<String> countList;
 
     public final static String ABSOLUTE_PATH_IN = "data/Input2.txt";
 
+    private static int countChanges;
+    private static int countSteps;
+
     public static void main(String[] args) throws Exception {
         arrays = new ArrayList<>();
+        countList = new ArrayList<>();
+        countChanges = 0;
+        countSteps = 0;
 
         importData();
-        for(int i = 0; i < arrays.size() ; i++)
+
+        for (int i = 0; i < arrays.size(); i++) {
+            List<Double> temp = bubbleSorting(arrays.get(i));
+            arrays.set(i, temp);
+        }
+
+        for(int i = 0; i < arrays.size() ; i++){
             System.out.println(Arrays.toString(arrays.get(i).toArray()));
+            System.out.println(countList.get(i));
+        }
+        
     }
 
     private static void importData() {
@@ -50,6 +66,50 @@ public class Main {
             
             e.printStackTrace();
         }
+    }
 
+    private static List<Double> bubbleSorting(List<Double> list) {
+
+        resetCountChanges();
+        resetCountSteps();
+
+        
+
+        for (int i = list.size() - 1; i > 0; i--) {
+
+            for (int j = 0; j < list.size() - 1; j++) {
+
+                if (list.get(j) > list.get(j + 1)) {
+                    double temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set((j + 1), temp);
+
+                    countOfChanges();
+                }
+            }
+
+            countOfSteps();
+        }
+
+        
+        countList.add(countChanges + "-" + countSteps);
+
+        return list;
+    }
+
+    private static void countOfChanges() {
+        countChanges++;
+    }
+
+    private static void resetCountChanges() {
+        countChanges = 0;
+    }
+
+    private static void countOfSteps() {
+        countSteps++;
+    }
+
+    private static void resetCountSteps() {
+        countSteps = 0;
     }
 }
